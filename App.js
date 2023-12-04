@@ -1,8 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-import dotenv from 'dotenv';
-
-dotenv.config();
+import routeUsuario from "./src/routers/usuario.router.js";
+import routeValidator from "./src/routers/validator.router.js";
 
 const app=express();
 
@@ -14,7 +13,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/',(req, res)=> {
     console.log(process.env);
     res.send('Pagina inicial');
-})
+});
+
+app.use('/usuario', routeUsuario);
+app.use('/usuario', routeValidator);
 
 //Servidor
 app.listen(3000,()=>{
