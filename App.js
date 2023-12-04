@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-import routeUsuario from "./src/routers/usuario.router";
-import routeValidator from "./src/routers/validator.router";
+import routeUsuario from "./src/routers/usuario.router.js";
+import routeValidator from "./src/routers/validator.router.js";
 
 const app=express();
 
@@ -15,8 +15,8 @@ app.get('/',(req, res)=> {
     res.send('Pagina inicial');
 });
 
-servidor.use('/usuario', routeUsuario);
-servidor.use('/usuario', routeValidator);
+app.use('/usuario', routeUsuario);
+app.use('/usuario', routeValidator);
 
 //Servidor
 app.listen(3000,()=>{
