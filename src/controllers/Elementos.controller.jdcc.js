@@ -2,11 +2,11 @@ import { pool } from '../../database/conexion.js';
 
 export const RegistrarElemento = async (req, res) => {
     try {
-        const { codigo_elemento, nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida } = req.body;
+        const { nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida } = req.body;
 
-        const sql = `INSERT INTO elementos (codigo_elemento, nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida)
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-        const values = [codigo_elemento, nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida];
+        const sql = `INSERT INTO elementos (nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida)
+                     VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const values = [nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida];
 
         const [rows] = await pool.query(sql, values);
 
@@ -56,11 +56,10 @@ export const BuscarElemento = async (req, res) => {
 export const Actualizarelemento = async (req, res) => {
     try {
         let id = req.params.id;
-        let { codigo_elemento, nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida } = req.body;
+        let { nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida } = req.body;
         let sql = `
             UPDATE elementos
-            SET codigo_elemento = ?,
-                nombre_elemento = ?,
+            SET nombre_elemento = ?,
                 stock = ?,
                 tipo_elemento = ?,
                 fecha_vancimiento = ?,
@@ -69,7 +68,7 @@ export const Actualizarelemento = async (req, res) => {
                 unidad_medida = ?
             WHERE codigo_elemento = ?
         `;
-        let [rows] = await pool.query(sql, [codigo_elemento, nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida, id]);
+        let [rows] = await pool.query(sql, [nombre_elemento, stock, tipo_elemento, fecha_vancimiento, fk_categoria, tipo_empaque, unidad_medida, id]);
 
         if (rows.affectedRows > 0) {
             return res.status(200).json({ "message": "Elemento actualizado con éxito" });

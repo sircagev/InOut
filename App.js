@@ -7,6 +7,9 @@ import routeBodega from "./src/routers/bodegas.router.jdcc.js";
 import routeDetalle from "./src/routers/detalleUbicacion.router.jdcc.js";
 import routeValidator from "./src/routers/validator.router.js";
 
+import routeDetallesReserva from "./src/routers/detallesreserva.router.js"
+import routeReservas from "./src/routers/reservas.router.js"
+
 const app=express();
 
 //Configuracion
@@ -25,6 +28,9 @@ app.use('/elemento', routeElemento);
 app.use('/categoria', routerCategoria);
 app.use('/bodega', routeBodega);
 app.use('/detalleUbicacion', routeDetalle);
+
+app.use('/detalleReserva', routeDetallesReserva);
+app.use('/reserva', routeReservas);
 
 //Servidor
 app.listen(3000,()=>{

@@ -2,11 +2,11 @@ import { pool } from '../../database/conexion.js'
 
 export const RegistrarUsuario = async(req,res)=> {
     try {
-    let { nombreUsuario, idUsuario, rolUsuario, correoUsuario, telefonoUsuario,estadoUsuario } =req.body;
-    let sql = `insert into registrarusuario (nombreUsuario,idUsuario,rolUsuario, correoUsuario, telefonoUsuario,estadoUsuario)
-               values ('${nombreUsuario}','${idUsuario}','${rolUsuario}', '${correoUsuario}', '${telefonoUsuario}', '${estadoUsuario}')`;
+    let { nombre_usuario, apellido_usuario, rol, email_usuario, numero,contraseña_usuario, ID_ficha } =req.body;
+    let sql = `insert into usuarios (nombre_usuario, apellido_usuario, rol, email_usuario, numero,contraseña_usuario, ID_ficha)
+               values (?,?,?,?,?,?,?)`;
 
-        let [rows] = await pool.query(sql);
+        let [rows] = await pool.query(sql, [nombre_usuario, apellido_usuario, rol, email_usuario, numero,contraseña_usuario,ID_ficha]);
         if(rows.affectedRows>0){
             return res.status(200).json({"message": "Se registró con éxito el usuairo"});
         }else {
@@ -19,7 +19,7 @@ export const RegistrarUsuario = async(req,res)=> {
 export const listarUsuario = async(req,res)=> {
 
     try{
-        const [result] = await pool.query('select * from registrarusuario');
+        const [result] = await pool.query('select * from usuarios');
         
         if(result.length>0){
             return res.status(200).json(result); 
@@ -35,7 +35,7 @@ export const listarUsuario = async(req,res)=> {
 export const BuscarUsuario = async (req, res) => {
     try {
         let id = req.params.id;
-        let sql = `select * from registrarusuario where id = ?`;
+        let sql = `select * from usuarios where id_usuario = ?`;
         let [rows] = await pool.query(sql, [id]);
 
         if (rows.length > 0) {
@@ -52,7 +52,7 @@ export const EliminarUsuario = async(req, res) => {
 
     try {
     let id = req.params.id;
-    let sql = `delete from registrarusuario where id = ${id}`;
+    let sql = `delete from usuarios where id_usuario = ${id}`;
     let[rows] = await pool.query(sql);
 
         if(rows.affectedRows > 0) {
@@ -68,18 +68,19 @@ export const ActualizarUsuario = async(req, res) => {
   
     try {
         let id = req.params.id;
-        let { nombreUsuario, idUsuario, rolUsuario,  correoUsuario, telefonoUsuario} =req.body;
+        let { nombre_usuario, apellido_usuario, rol, email_usuario, numero,contraseña_usuario} =req.body;
         let sql = `
-            UPDATE registrarusuario
-            SET  nombreUsuario = ?,
-                idUsuario = ?,
-                rolUsuario = ?,
-                correoUsuario = ?,
-                telefonoUsuario = ?
+            UPDATE usuarios
+            SET  nombre_usuario = ?,
+            apellido_usuario = ?,
+                rol = ?,
+                email_usuario = ?,
+                numero = ?,
+                contraseña_usuario = ?
                
-            WHERE id = ?
+            WHERE id_usuario = ?
         `;
-        let [rows] = await pool.query(sql, [ nombreUsuario, idUsuario, rolUsuario,  correoUsuario, telefonoUsuario, id]);
+        let [rows] = await pool.query(sql, [ nombre_usuario, apellido_usuario, rol, email_usuario, numero,contraseña_usuario, id]);
 
             if (rows.affectedRows > 0) {
                 return res.status(200).json({ "message": "Usuario actualizado con éxito" });
@@ -96,13 +97,13 @@ export const EstadoUsuario = async(req, res) => {
   
     try {
         let id = req.params.id;
-        let {estadoUsuario} =req.body;
+        let {estado} =req.body;
         let sql = `
-            UPDATE registrarusuario
-            SET estadoUsuario = ?
-            WHERE id = ?
+            UPDATE usuarios
+            SET estado = ?
+            WHERE id_usuario = ?
         `;
-        let [rows] = await pool.query(sql, [estadoUsuario, id]);
+        let [rows] = await pool.query(sql, [estado, id]);
 
             if (rows.affectedRows > 0) {
                 return res.status(200).json({ "message": "Estado del Usuario actualizado con éxito" });

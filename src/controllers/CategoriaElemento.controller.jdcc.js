@@ -2,11 +2,11 @@ import { pool } from '../../database/conexion.js';
 
 export const RegistrarCategoria = async (req, res) => {
     try {
-        const { codigo_categoria, nombre_categoria } = req.body;
+        const { nombre_categoria } = req.body;
 
-        const sql = `INSERT INTO categoria_elemento (codigo_categoria, nombre_categoria)
-                     VALUES (?, ?)`;
-        const values = [codigo_categoria, nombre_categoria];
+        const sql = `INSERT INTO categoria_elemento ( nombre_categoria)
+                     VALUES (?)`;
+        const values = [ nombre_categoria];
 
         const [rows] = await pool.query(sql, values);
 
