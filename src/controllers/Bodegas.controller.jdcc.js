@@ -37,3 +37,58 @@ export const listarBodegas = async(req,res)=> {
 
 };
 
+export const BuscarBodega = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let sql = `select * from bodegas where codigo_bodega = ?`;
+        let [rows] = await pool.query(sql, [id]);
+
+        if (rows.length > 0) {
+            return res.status(200).json({ "message": "Bodega encontrado con éxito", "Elemento": rows[0] });
+        } else {
+            return res.status(404).json({ "message": "Bodega no encontrado" });
+        }
+    } catch (e) {
+        return res.status(500).json({ "message": e.message });
+    }
+};
+
+export const ActualizarBodega = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let { codigo_bodega, ubicacion_bodega, nombre_bodega } = req.body;
+        let sql = `
+            UPDATE bodegas
+                SET codigo_bodega = ?,
+                ubicacion_bodega = ?,
+                nombre_bodega = ?
+            WHERE codigo_bodega = ?
+        `;
+        let [rows] = await pool.query(sql, [ codigo_bodega, ubicacion_bodega, nombre_bodega, id]);
+
+        if (rows.affectedRows > 0) {
+            return res.status(200).json({ "message": "Bodega actualizada con éxito" });
+        } else {
+            return res.status(404).json({ "message": "Bodega no encontrada" });
+        }
+    } catch (e) {
+        return res.status(500).json({ "message": e.message });
+    }
+}
+
+export const EliminarBodega = async(req, res) => {
+
+    try {
+    let id = req.params.id;
+    let sql = `delete from bodegas where codigo_bodega = ${id}`;
+    let[rows] = await pool.query(sql);
+
+        if(rows.affectedRows > 0) {
+            return res.status(200).json({"message": "Bodega elminada con éxito"});
+        } else {
+            return res.status(403).json({"message": "Bodega no eliminada"});
+        }
+    }catch(e) {
+        return res.status(500).json({"message": e.message});
+    }
+};
