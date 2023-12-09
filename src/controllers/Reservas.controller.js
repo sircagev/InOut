@@ -147,3 +147,19 @@ export const ReservaEntregada = async (req, res) => {
         return res.status(500).json({ message: e.message });
     }
 };
+
+// Listar las Reservas activas
+export const listarReservasActivas = async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM reservas WHERE estado_reserva = ?';
+        const [result] = await pool.query(sql, ['solicitado']);
+
+        if (result.length > 0) {
+            return res.status(200).json(result);
+        } else {
+            return res.status(404).json({ message: 'No se encontraron reservas activas' });
+        }
+    } catch (e) {
+        return res.status(500).json({ message: e.message });
+    }
+};
