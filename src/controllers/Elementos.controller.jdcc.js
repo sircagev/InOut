@@ -37,6 +37,23 @@ export const listarElementos = async(req,res)=> {
 
 };
 
+//Se listan los elementos que se encuentren por debajo de 10 unidades y se genera una alerta
+export const listarElementosConStockBajo = async (req, res) => {
+    try {
+        const [result] = await pool.query('SELECT * FROM elementos WHERE stock < 10');
+
+        if (result.length > 0) {
+            return res.status(200).json(result);
+        } else {
+            return res.status(404).json({ 'message': 'No se encontraron elementos con stock bajo' });
+        }
+
+    } catch (e) {
+        return res.status(500).json({ 'message': 'Error: ' + e });
+    }
+};
+
+
 export const BuscarElemento = async (req, res) => {
     try {
         let id = req.params.id;
